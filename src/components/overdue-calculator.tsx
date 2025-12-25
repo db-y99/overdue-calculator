@@ -79,14 +79,14 @@ export function OverdueCalculator() {
     const AVERAGE_RATE = 1.099 / 100;
     const OVERDUE_MULTIPLIER = 1.5;
 
-    const averageDailyAmount = Math.round(dueAmount * AVERAGE_RATE);
-    const overduePerDay = Math.round(averageDailyAmount * OVERDUE_MULTIPLIER);
+    const averageDailyAmount = dueAmount * AVERAGE_RATE;
+    const overduePerDay = averageDailyAmount * OVERDUE_MULTIPLIER;
     const totalOverdue = overduePerDay * overdueDays;
 
     setResult({
-      averageDailyAmount: averageDailyAmount,
-      overduePerDay: overduePerDay,
-      totalOverdue: totalOverdue,
+      averageDailyAmount: Math.round(averageDailyAmount),
+      overduePerDay: Math.round(overduePerDay),
+      totalOverdue: Math.round(totalOverdue),
     });
     setAnimationKey((prev) => prev + 1);
   }
@@ -97,13 +97,13 @@ export function OverdueCalculator() {
       currency: "VND",
     }).format(value);
   };
-  
+
   const formatNumberInput = (value: string) => {
-    const numberValue = parseInt(value.replace(/[^0-9]/g, ''), 10);
+    const numberValue = parseInt(value.replace(/[^0-9]/g, ""), 10);
     if (isNaN(numberValue)) {
-      return '';
+      return "";
     }
-    return new Intl.NumberFormat('en-US').format(numberValue);
+    return new Intl.NumberFormat("en-US").format(numberValue);
   };
 
   return (
@@ -135,7 +135,9 @@ export function OverdueCalculator() {
                           className="pl-10"
                           inputMode="numeric"
                           onChange={(e) => {
-                            const formattedValue = formatNumberInput(e.target.value);
+                            const formattedValue = formatNumberInput(
+                              e.target.value
+                            );
                             field.onChange(formattedValue);
                           }}
                         />
@@ -182,7 +184,10 @@ export function OverdueCalculator() {
       </Card>
 
       {result && (
-        <div key={animationKey} className="animate-in fade-in-0 slide-in-from-bottom-10 duration-500">
+        <div
+          key={animationKey}
+          className="animate-in fade-in-0 slide-in-from-bottom-10 duration-500"
+        >
           <Card className="shadow-xl">
             <CardHeader>
               <CardTitle className="font-headline text-2xl">
@@ -214,9 +219,7 @@ export function OverdueCalculator() {
               </div>
               <Separator className="my-4" />
               <div className="text-center">
-                <p className="text-sm text-muted-foreground">
-                  Số tiền quá hạn
-                </p>
+                <p className="text-sm text-muted-foreground">Số tiền quá hạn</p>
                 <p className="font-headline text-4xl font-bold text-accent">
                   {formatCurrency(result.totalOverdue)}
                 </p>
